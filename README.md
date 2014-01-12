@@ -3,7 +3,7 @@ thumbnailr
 
 Thumbnailr is a PHP library for dynamically generating image thumbnails in either PNG or JPEG format.
 
-Usage example:
+##Usage example
 ```php
 // the path to the source image
 $img = 'path/to/image.png';
