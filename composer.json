@@ -1,0 +1,7 @@
+{
+	"name": "carlosafonso/thumbnailr",
+	"description": "A PHP library for dynamically generating image thumbnails",
+	"require": {
+		"php": ">= 5.3.0"
+	}
+}
