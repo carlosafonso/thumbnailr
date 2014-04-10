@@ -3,6 +3,24 @@ thumbnailr
 
 Thumbnailr is a PHP library for dynamically generating image thumbnails in either PNG or JPEG format.
 
+##Installation
+###Installing via Composer
+Since v1.1.0 Thumbnailr is available via Composer. Add a reference to Thumbnailr in your `composer.json` file;
+
+```json
+{
+  "require": {
+    "carlosafonso/thumbnailr": "1.1.0"
+  }
+}
+```
+
+Then fire up a terminal and run the following wherever your `composer.json` file is located:
+```bash
+$ composer install
+```
+
+
 ##Usage example
 ```php
 // the path to the source image
