@@ -12,9 +12,9 @@ namespace Thumbnailr;
  */
 class Thumbnailr {
 
-	const THUMBNAILR_SIZE_FIXED			= 1;
-	const THUMBNAILR_SIZE_FIT_LONGEST	= 2;
-	const THUMBNAILR_SIZE_FIT_SHORTEST	= 3;
+	const SIZE_FIXED		= 1;
+	const SIZE_FIT_LONGEST	= 2;
+	const SIZE_FIT_SHORTEST	= 3;
 
 	private $file;
 
@@ -36,20 +36,20 @@ class Thumbnailr {
 	 * @param	int		sizeTransformation		A flag which specifies what kind of
 	 *											transformation will be applied to the
 	 *											final size of the thumbnail. Currently
-	 *											3 different values are supported: THUMBNAILR_SIZE_FIXED
+	 *											3 different values are supported: SIZE_FIXED
 	 *											applies no transformation and the thumbnail will
 	 *											have the exact size provided to the function;
-	 *											THUMBNAILR_SIZE_FIT_LONGEST will scale the thumbnail
+	 *											SIZE_FIT_LONGEST will scale the thumbnail
 	 *											so that the longest side fully fits within the specified size;
-	 *											THUMBNAILR_SIZE_FIT_SHORTEST will scale the thumbnail
+	 *											SIZE_FIT_SHORTEST will scale the thumbnail
 	 *											so that the shortest side fully fits within the specified size.
-	 *											Both THUMBNAILR_SIZE_FIT_LONGEST and THUMBNAILR_SIZE_FIT_SHORTEST
+	 *											Both SIZE_FIT_LONGEST and SIZE_FIT_SHORTEST
 	 *											will keep the aspect ratio of the original image.
-	 * @return	Thumbnailr	This instance of Thumbnailr to allow function chaining.
+	 * @return	Thumbnailr\Thumbnailr	This instance of Thumbnailr to allow function chaining.
 	 * @throws	Exception	If the size transformation flag contains an invalid value.
 	 * @since	1.1
 	 */
-	public function buildThumbnail($width, $height, $sizeTransformation = self::THUMBNAILR_SIZE_FIT_LONGEST)
+	public function buildThumbnail($width, $height, $sizeTransformation = self::SIZE_FIT_LONGEST)
 	{
 		$size = getimagesize($this->file);
 
@@ -58,23 +58,23 @@ class Thumbnailr {
 
 		switch ($sizeTransformation)
 		{
-			case self::THUMBNAILR_SIZE_FIXED:
+			case self::SIZE_FIXED:
 
 				break;
 
-			case self::THUMBNAILR_SIZE_FIT_LONGEST:
-			case self::THUMBNAILR_SIZE_FIT_SHORTEST:
+			case self::SIZE_FIT_LONGEST:
+			case self::SIZE_FIT_SHORTEST:
 				$rHeight = $width * $oHeight / $oWidth;
 				$rWidth = $height * $oWidth / $oHeight;
 
-				if ($sizeTransformation == self::THUMBNAILR_SIZE_FIT_LONGEST)
+				if ($sizeTransformation == self::SIZE_FIT_LONGEST)
 				{
 					if ($rHeight <= $height)
 						$height = $rHeight;
 					else
 						$width = $rWidth;
 				}
-				else if ($sizeTransformation == self::THUMBNAILR_SIZE_FIT_SHORTEST)
+				else if ($sizeTransformation == self::SIZE_FIT_SHORTEST)
 				{
 					if ($rHeight > $height)
 						$height = $rHeight;
@@ -85,7 +85,7 @@ class Thumbnailr {
 				break;
 
 			default:
-				throw new Exception("Invalid size transformation modifier, expecting THUMBNAILR_SIZE_FIXED, THUMBNAILR_SIZE_FIT_LONGEST or THUMBNAILR_SIZE_FIT_SHORTEST");
+				throw new Exception("Invalid size transformation modifier, expecting SIZE_FIXED, SIZE_FIT_LONGEST or SIZE_FIT_SHORTEST");
 		}
 		
 		if (substr_compare(strtolower($this->file), '.png', -4, 4) === 0)
@@ -100,30 +100,6 @@ class Thumbnailr {
 		
 		// to allow method chaining
 		return $this;
-	}
-
-	/**
-	 * Creates a thumbnail from the original image resource.
-	 *
-	 * The original image must have been provided to the
-	 * constructor of this class.
-	 *
-	 * @param	int		width					The width of the thumbnail
-	 * @param	int		height					The height of the thumbnail
-	 * @param	boolean	keepAspectRatio		Whether or not to keep the aspect
-	 *											ratio of the original image. If set to
-	 *											TRUE, either the width or height specified
-	 *											as parameters will be ignored and adjusted
-	 *											so that the thumbnail size keeps the original
-	 *											image's aspect ratio.
-	 * @return	Thumbnailr	This instance of Thumbnailr to allow function chaining.
-	 * @deprecated	1.1	This function does not use the size transformation
-	 *					parameter. Use buildThumbnail() instead. Calling this
-	 *					function will use buildThumbnail() internally.
-	 */
-	public function createThumbnail($width, $height, $keepAspectRatio = TRUE)
-	{
-		return $this->buildThumbnail($width, $height, $keepAspectRatio ? self::THUMBNAILR_SIZE_FIT_LONGEST : self::THUMBNAILR_SIZE_FIXED);
 	}
 
 	/**
