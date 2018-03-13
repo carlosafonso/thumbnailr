@@ -88,12 +88,19 @@ class Thumbnailr {
 				throw new Exception("Invalid size transformation modifier, expecting SIZE_FIXED, SIZE_FIT_LONGEST or SIZE_FIT_SHORTEST");
 		}
 		
-		if (substr_compare(strtolower($this->file), '.png', -4, 4) === 0)
-			$this->src = imagecreatefrompng($this->file);
-		else if (substr_compare(strtolower($this->file), '.jpg', -4, 4) === 0 || substr_compare(strtolower($this->file), '.jpeg', -5, 5) === 0)
-			$this->src = imagecreatefromjpeg($this->file);
-		else
-			throw new Exception("Unrecognized file type");
+    $ename=getimagesize($this->file);
+    $ename=explode('/',$ename['mime']);
+    $ext=$ename[1];
+
+    switch($ext){
+     case "png":
+      $this->src = imagecreatefrompng($this->file);
+      break;
+     case "jpeg":
+     case "jpg":
+      $this->src = imagecreatefromjpeg($this->file);
+      break;
+    }
 
 		$this->dst = imagecreatetruecolor($width, $height);
 		imagecopyresampled($this->dst, $this->src, 0, 0, 0, 0, $width, $height, $oWidth, $oHeight);
